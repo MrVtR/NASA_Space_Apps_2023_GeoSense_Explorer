@@ -4,7 +4,7 @@ function makePostRequest(event) {
   element.classList.toggle('visible-element');
 
   console.log('Fazendo requisição');
-  const url = 'http://localhost:8080/nasa/values';
+  const url = 'https://nasa-api-sij3k2u3xa-rj.a.run.app/nasa/writeTif';
   const latitude = document.getElementById('latitude').value;
   const longitude = document.getElementById('longitude').value;
 
