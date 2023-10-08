@@ -1,36 +1,18 @@
-function makePostRequest() {
-  const url = 'https://nasa-api-sij3k2u3xa-rj.a.run.app'; // Replace with your desired API endpoint URL
+function makePostRequest(lon, lat) {
+  console.log('Fazendo requisição');
+  const url = 'http://localhost:8080/nasa/values';
 
   const data = {
-    title: 'foo',
-    body: 'bar',
-    userId: 1,
+    lon: -47.0616,
+    lat: -22.9064,
   };
 
   axios
-    .get(url)
+    .post(url, data)
     .then((response) => {
-      console.log('Response:', response);
+      console.log('Response:', response.data);
     })
     .catch((error) => {
       console.error('Error:', error);
     });
-}
-
-function test() {
-  const button = document.getElementById('post-btn');
-
-  button.addEventListener('click', async (_) => {
-    try {
-      const response = await fetch('yourUrl', {
-        method: 'post',
-        body: {
-          // Your body
-        },
-      });
-      console.log('Completed!', response);
-    } catch (err) {
-      console.error(`Error: ${err}`);
-    }
-  });
 }

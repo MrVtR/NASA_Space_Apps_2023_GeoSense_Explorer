@@ -1,6 +1,6 @@
 function makePostRequest() {
   console.log('Fazendo requisição');
-  const url = '127.0.0.1:8080/nasa/values'; // Replace with your API endpoint URL
+  const url = 'https://nasa-api-sij3k2u3xa-rj.a.run.app/nasa/values'; // Replace with your API endpoint URL
 
   const data = {
     lon: -47.0616,
