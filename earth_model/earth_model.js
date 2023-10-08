@@ -60,7 +60,7 @@ const sphere = new THREE.Mesh(
     fragmentShader,
     uniforms: {
       globeTexture: {
-        value: new THREE.TextureLoader().load('../assets/earthUVTexture.jpeg'),
+        value: new THREE.TextureLoader().load('./earthUVTexture.jpeg'),
       },
     },
   }),
