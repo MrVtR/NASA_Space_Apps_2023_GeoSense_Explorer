@@ -19,11 +19,11 @@
 
     
 
-    <script src="js/request.js"></script>
+    <script src="js/apiLogic/request.js"></script>
 
     <title>GeoSense Explorer</title>
-    <script type="module" crossorigin src="/assets/index-45c7e65f.js"></script>
-    <link rel="stylesheet" href="/assets/index-ffaa2963.css">
+    <script type="module" crossorigin src="/assets/index-4e6a0393.js"></script>
+    <link rel="stylesheet" href="/assets/index-5248ca01.css">
   </head>
 
   <body>
@@ -80,71 +80,83 @@
             </section>
           </div>
 
-          <button class="accordion" id="dataforex">DATA FOR EXPLORATION</button>
+          <button
+            class="accordion"
+            id="dataforex"
+            onclick="makePostRequestExploration()"
+          >
+            DATA FOR EXPLORATION
+          </button>
+
           <div class="panel" id="dificultyPanel">
-            <p class="title" id="icon-exploration-dificulty">
-              Field Activities Dificulty Index
-            </p>
-            <div class="meter">
-              <span
-                style="width: 30%; background-color: rgb(66, 156, 66)"
-              ></span>
-              <span
-                style="width: 40%; background-color: rgb(143, 156, 66)"
-              ></span>
-              <span
-                style="width: 30%; background-color: rgb(156, 66, 66)"
-              ></span>
-              <img
-                class="indicator"
-                src="/assets/geologist_2-10308c52.svg"
-                style="left: 50%"
-              />
-            </div>
+            <h3 id="loading2" class="hidden-element">Loading...</h3>
+            <div id="panel-details" class="hidden-element">
+              <p class="title" id="icon-exploration-dificulty">
+                Field Activities Difficulty Index
+              </p>
+              <div class="meter">
+                <span
+                  style="width: 30%; background-color: rgb(66, 156, 66)"
+                ></span>
+                <span
+                  style="width: 40%; background-color: rgb(143, 156, 66)"
+                ></span>
+                <span
+                  style="width: 30%; background-color: rgb(156, 66, 66)"
+                ></span>
+                <img
+                  class="indicator"
+                  src="/assets/geologist_2-10308c52.svg"
+                  style="left: 50%"
+                />
+              </div>
 
-            <p class="title" id="icon-environment-risks">Environment Risks</p>
-            <div class="icons">
-              <div class="icon">
-                <img src="/assets/fire-6fd97ffc.png" alt="Icon 1" />
-                <span class="tooltip"
-                  >Mean temperature of 34°C, you may be exposed to termic
-                  stress</span
-                >
-              </div>
-              https://nasa-api-sij3k2u3xa-rj.a.run.app/nasa/writeTif
-
-              <div class="icon">
-                <img src="/assets/sun-ff74596d.png" alt="Icon 2" />
-                <span class="tooltip"
-                  >High UV incidence, watch outfor sunburns</span
-                >
-              </div>
-              <div class="icon">
-                <img src="/assets/chuva-ba6abc91.png" alt="Icon 3" />
-                <span class="tooltip"
-                  >Mean Precipitation of 40mm/h can make field activities
-                  difficult</span
-                >
-              </div>
-              <div class="icon">
-                <img src="/assets/montanha-5ac68d43.png" alt="Icon 4" />
-                <span class="tooltip"
-                  >Terrain Slope of 30% can make it dificult to walk or
-                  climb</span
-                >
-              </div>
-              <div class="icon">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAATLSURBVFiFrZfLb1R1FMc/v3vv3DvTTt9pa6FgMSCgtggkJuIjTbrwETcQXsYuMPIHsNC4cTFsjHFnQiKGGDb1kbLQRKMu0GBAF7owgIEiDUUoYjt9zqPzuPf+jouZTjuvMg797ebc8/uezz2/c879jaLOdeXI9jcQPgRA1DsD58Y+r0dH1eJ0ff+OjmyAfcoKXNK+26m0DCjFZ4Cdd8mIMKy1cdl0rBnx3Odtl193fjU2+9AAE8f6grGUM6aER4E7QDfgVHHPAFPAZmAiFPd3bvt+PFM3wOUj20+gZUgp9VphgwniVxEreabgGy38uOvcjY/+N8Dlo48PKa3Or7bZjUJ4k5CZVySnireGHxGcViF+V5FNFj8TYWjXuRs/VYpjVAMQn7LUZZOKhXGF3SRYwRW7FRICYWF+vDw4gKnKtZbXmkdw9fD2YVHyQqk93MVAJqZ63RS9AIEQk06zTCamuVIWQNTF/tEbI3UBrA234wtBjuZE1Jf9o2Ov16NT9QjWWktnNvY6HX673ayxmzVOh9++dGZjbz1aNWdARjGj0b5OG2vAcNzvALPExddp45Wskqudnbej6jBVeqUOAPlkbyBuzlzLLphbtYZge2Xt9JyFYQp2i3ezafLOEyqC9yDtmo5gnvkeYKvWoNbYoQxBewpQ2xZ6t2ysRbsmgIDymgDEMzBKE79azATxVX4PresGIEZOzPfACEh1sYBG55MuWtrWDUCJ0QtgWoJh6+pitmBYOUCt9KZ1AxBDNgOEuryiGsh4ivEpm0Q6Z1RGzgfAUDxWi7ZVixPCjlJTKqsY+aWVeNokYAnDzy1IW4Nf6CoRttQiXeMR8HSp7c/JEPF0riJdT/HH7WBJS6vd6wIgZ/uConiy1D6bKG6Hiahd6vLU/Nm+B3bCAwESWp6lwgUk5Ra/8OKSyeJSEZRheLLvoQEm5wLHK9ljS+UDYSIaKPqtYPChAeYS5sultqWMwVyyfOvfs8UAAsMia4/7NQEiB3a/OLVotZfar046iJTr3pmx8VeNCaXouXdqy8G6ATCM98buO8RSK+mejln8dqsBgETaJZFxC89cX3Hz3+JyyXrqdCRSPU7VyX7ywJ4joN71teLaPw4LSybjUw4/jzXi5ds9lnJBFEF7RSaWNujvzaDyCWpwJNQc7+779MLs1zUDvL//mQ7fkG+BRgDPV0zHLKIxC70q9Ym0i22ZOIEVmWTGJGhpetpWvsRtDXrXUP+GH0YuRe+VxipLzeihQ2bW1CNAV7XsLC9PC5ZRXgsX/wpz5W6wUCeLKVPNLJofRwYHyyZvmeGavvUBUKj8tOszn8zQ09pQAUBjmqsABNKeTzBgcv7PMBeuN2IakMnNjN10xE8DRW1dlIHIgT0ngLcLeiLMxlM0OuWfDF8LWoSAuSIhwPRiimy+FTxfLQdfXm/lYxRW4fAiB/ceB3WKVde0uUQGATrCwbLLW9bTpF2floaVEawUuH7OXgk67/TS4M4N0QvX7/9eADh5cM+biDqzOiOJtEs85dLVEsKscM6prI9GCDvFw8cJmMwlMxiGwrEq1rhC8eoyhIocGwwSj08DTcseaddjajFNd3OQoF35TWYTGQwFbY3l/1PTrs90LEVLyKYlZFe7+ibI0v0fv7veJujmU7oAAAAOZVhJZk1NACoAAAAIAAAAAAAAANJTkwAAAABJRU5ErkJggg==" alt="Icon 5" />
-                <span class="tooltip"
-                  >Active Volcanoes may be a threaten to your activities</span
-                >
-              </div>
-              <div class="icon">
-                <img src="/assets/terremoto-2e7a048a.png" alt="Icon 6" />
-                <span class="tooltip"
-                  >Earthquakes of 5 degrees in richter scale occur frequently in
-                  the last year</span
-                >
+              <p class="title" id="icon-environment-risks">Environment Risks</p>
+              <div class="icons" id="icons">
+                <div class="icon" id="icon0">
+                  <img src="data:image/png;base64,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" alt="Icon 0" />
+                  <span class="tooltip">Low temperatures</span>
+                </div>
+                <div class="icon" id="icon1">
+                  <img src="/assets/fire-6fd97ffc.png" alt="Icon 1" />
+                  <span class="tooltip"
+                    >Mean temperature of 34°C, you may be exposed to termic
+                    stress</span
+                  >
+                </div>
+                <div class="icon" id="icon2">
+                  <img src="/assets/sun-ff74596d.png" alt="Icon 2" />
+                  <span class="tooltip"
+                    >High UV incidence, watch outfor sunburns</span
+                  >
+                </div>
+                <div class="icon" id="icon3">
+                  <img src="/assets/rain-ba6abc91.png" alt="Icon 3" />
+                  <span class="tooltip"
+                    >Mean Precipitation of 40mm/h can make field activities
+                    difficult</span
+                  >
+                </div>
+                <div class="icon" id="icon4">
+                  <img src="/assets/montanha-5ac68d43.png" alt="Icon 4" />
+                  <span class="tooltip"
+                    >Terrain Slope of 30% can make it dificult to walk or
+                    climb</span
+                  >
+                </div>
+                <div class="icon" id="icon5">
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAA7AAAAOwBeShxvQAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAATLSURBVFiFrZfLb1R1FMc/v3vv3DvTTt9pa6FgMSCgtggkJuIjTbrwETcQXsYuMPIHsNC4cTFsjHFnQiKGGDb1kbLQRKMu0GBAF7owgIEiDUUoYjt9zqPzuPf+jouZTjuvMg797ebc8/uezz2/c879jaLOdeXI9jcQPgRA1DsD58Y+r0dH1eJ0ff+OjmyAfcoKXNK+26m0DCjFZ4Cdd8mIMKy1cdl0rBnx3Odtl193fjU2+9AAE8f6grGUM6aER4E7QDfgVHHPAFPAZmAiFPd3bvt+PFM3wOUj20+gZUgp9VphgwniVxEreabgGy38uOvcjY/+N8Dlo48PKa3Or7bZjUJ4k5CZVySnireGHxGcViF+V5FNFj8TYWjXuRs/VYpjVAMQn7LUZZOKhXGF3SRYwRW7FRICYWF+vDw4gKnKtZbXmkdw9fD2YVHyQqk93MVAJqZ63RS9AIEQk06zTCamuVIWQNTF/tEbI3UBrA234wtBjuZE1Jf9o2Ov16NT9QjWWktnNvY6HX673ayxmzVOh9++dGZjbz1aNWdARjGj0b5OG2vAcNzvALPExddp45Wskqudnbej6jBVeqUOAPlkbyBuzlzLLphbtYZge2Xt9JyFYQp2i3ezafLOEyqC9yDtmo5gnvkeYKvWoNbYoQxBewpQ2xZ6t2ysRbsmgIDymgDEMzBKE79azATxVX4PresGIEZOzPfACEh1sYBG55MuWtrWDUCJ0QtgWoJh6+pitmBYOUCt9KZ1AxBDNgOEuryiGsh4ivEpm0Q6Z1RGzgfAUDxWi7ZVixPCjlJTKqsY+aWVeNokYAnDzy1IW4Nf6CoRttQiXeMR8HSp7c/JEPF0riJdT/HH7WBJS6vd6wIgZ/uConiy1D6bKG6Hiahd6vLU/Nm+B3bCAwESWp6lwgUk5Ra/8OKSyeJSEZRheLLvoQEm5wLHK9ljS+UDYSIaKPqtYPChAeYS5sultqWMwVyyfOvfs8UAAsMia4/7NQEiB3a/OLVotZfar046iJTr3pmx8VeNCaXouXdqy8G6ATCM98buO8RSK+mejln8dqsBgETaJZFxC89cX3Hz3+JyyXrqdCRSPU7VyX7ywJ4joN71teLaPw4LSybjUw4/jzXi5ds9lnJBFEF7RSaWNujvzaDyCWpwJNQc7+779MLs1zUDvL//mQ7fkG+BRgDPV0zHLKIxC70q9Ym0i22ZOIEVmWTGJGhpetpWvsRtDXrXUP+GH0YuRe+VxipLzeihQ2bW1CNAV7XsLC9PC5ZRXgsX/wpz5W6wUCeLKVPNLJofRwYHyyZvmeGavvUBUKj8tOszn8zQ09pQAUBjmqsABNKeTzBgcv7PMBeuN2IakMnNjN10xE8DRW1dlIHIgT0ngLcLeiLMxlM0OuWfDF8LWoSAuSIhwPRiimy+FTxfLQdfXm/lYxRW4fAiB/ceB3WKVde0uUQGATrCwbLLW9bTpF2floaVEawUuH7OXgk67/TS4M4N0QvX7/9eADh5cM+biDqzOiOJtEs85dLVEsKscM6prI9GCDvFw8cJmMwlMxiGwrEq1rhC8eoyhIocGwwSj08DTcseaddjajFNd3OQoF35TWYTGQwFbY3l/1PTrs90LEVLyKYlZFe7+ibI0v0fv7veJujmU7oAAAAOZVhJZk1NACoAAAAIAAAAAAAAANJTkwAAAABJRU5ErkJggg==" alt="Icon 5" />
+                  <span class="tooltip"
+                    >Active Volcanoes may be a threaten to your activities</span
+                  >
+                </div>
+                <div class="icon" id="icon6">
+                  <img src="/assets/earthquake-2e7a048a.png" alt="Icon 6" />
+                  <span class="tooltip"
+                    >Earthquakes of 5 degrees in richter scale occur frequently
+                    in the last year</span
+                  >
+                </div>
               </div>
             </div>
           </div>

@@ -5,7 +5,7 @@ function makePostRequest(event) {
   element.classList.add('visible-element');
 
   console.log('Fazendo requisição');
-  const url = 'http://localhost:8080/nasa/writeTif';
+  const url = 'https://nasa-api-sij3k2u3xa-rj.a.run.app/nasa/writeTif';
 
   var longitude = document.getElementById('longitude').value;
   var latitude = document.getElementById('latitude').value;
@@ -39,7 +39,7 @@ function makePostRequestExploration() {
     element.classList.add('visible-element');
 
     console.log('Fazendo requisição');
-    const url = 'http://localhost:8080/nasa/values';
+    const url = 'https://nasa-api-sij3k2u3xa-rj.a.run.app/nasa/values';
     const latitude = document.getElementById('latitude').value;
     const longitude = document.getElementById('longitude').value;
 
@@ -162,7 +162,7 @@ function makePostRequestExplorationDashboard() {
   element.classList.add('visible-element');
 
   console.log('Fazendo requisição');
-  const url = 'http://localhost:8080/nasa/values';
+  const url = 'https://nasa-api-sij3k2u3xa-rj.a.run.app/nasa/values';
 
   const data = {
     lon: parseFloat(longitude),
@@ -281,7 +281,7 @@ function makePostRequestBody() {
   console.log(element);
 
   console.log('Fazendo requisição');
-  const url = 'http://localhost:8080/nasa/writePngImage';
+  const url = 'https://nasa-api-sij3k2u3xa-rj.a.run.app/nasa/writePngImage';
 
   const data = {
     type: 'normal',
@@ -324,7 +324,7 @@ function makePostRequestImage(typeImage) {
   console.log(element);
 
   console.log('Fazendo requisição');
-  const url = 'http://localhost:8080/nasa/writePngImage';
+  const url = 'https://nasa-api-sij3k2u3xa-rj.a.run.app/nasa/writePngImage';
 
   const data = {
     type: typeImage,
