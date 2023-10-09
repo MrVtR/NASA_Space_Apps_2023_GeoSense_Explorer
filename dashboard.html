@@ -1,85 +1,151 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="./assets/LogoIcon.svg" />
-    <link rel="stylesheet" href="./css/dashboard.css">
+    <link rel="stylesheet" href="./css/dashboard.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
     <script type="module" src="./js/interactionLogic/autotyping.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="js/apiLogic/request.js"></script>
 
     <title>GeoSense Explorer</title>
   </head>
 
-  <body>
+  <body onload="makePostRequestBody();makePostRequestExplorationDashboard()">
+    <header>
+      <div class="info-header">
+        <div class="logo">
+          <h3>GeoSense Explorer dashboard</h3>
+        </div>
+        <div class="icons-header"></div>
+      </div>
+      <div style="align-items: center" class="info-header">
+        <img src="" />
+      </div>
+    </header>
 
     <section class="main">
       <div class="sidebar">
-        <div class="logo">
-          <img src="./assets/logotype.svg">
-        </div>
-        <h3>
-          Band Combinations
-        </h3>
-        <a href="#natural-color">Natural Color</a>
-        <a href="#color-infrared">Color Infrared</a>
-        <a href="#sabins-ratio">Sabins Ratio</a>
-        <a href="#kaufman-ratio">Kaufman Ratio</a>
-        <a href="#sultan-ratio">Sultan Ratio</a>
+        <h3>Band Combinations</h3>
+        <a href="#natural-color" onclick="makePostRequestImage('normal')"
+          >Natural Color</a
+        >
+        <a href="#color-infrared" onclick="makePostRequestImage('infrared')"
+          >Color Infrared</a
+        >
+        <a href="#sabins-ratio" onclick="makePostRequestImage('sabins')"
+          >Sabins Ratio</a
+        >
+        <a href="#kaufman-ratio" onclick="makePostRequestImage('kaufman')"
+          >Kaufman Ratio</a
+        >
+        <a href="#sultan-ratio" onclick="makePostRequestImage('sultan')"
+          >Sultan Ratio</a
+        >
         <div class="separator"></div>
-        <h3>
-          Mineral Index
-        </h3>
-        <a href="#ferric-iron-1">Ferric iron 1</a>
-        <a href="#clay-sulfate-mica-marble">Clay, sulfate, mica, and marble</a>
-        <a href="#green-vegetation">Green vegetation</a>
+        <h3>Mineral Index</h3>
+        <a href="#ferric-iron-1" onclick="makePostRequestImage('iron_ferric_2')"
+          >Ferric iron 1</a
+        >
+        <a
+          href="#clay-sulfate-mica-marble"
+          onclick="makePostRequestImage('veg')"
+          >Clay, sulfate, mica, and marble</a
+        >
+        <a href="#green-vegetation" onclick="makePostRequestImage('clay')"
+          >Green vegetation</a
+        >
         <div class="separator"></div>
       </div>
 
       <div class="content">
-
+        <h3 id="loading3" class="visible-element" style="color: white">
+          Loading...
+        </h3>
         <div class="box-info">
-          <div style="background: #1B1D21; border: 2px solid #e4e4e45e" class="box-info-single" id="box-info-1">
+          <div
+            style="background: #282828; border: 2px solid #e4e4e45e"
+            class="box-info-single"
+            id="box-info-1"
+          >
             <div class="info-text">
               <h3 class="title-1">Field Activities Difficulty Index</h3>
-              <div class="meter">
-                <span style="width: 30%; background-color: rgb(66, 156, 66);"></span>
-                <span style="width: 40%; background-color: rgb(143, 156, 66);"></span>
-                <span style="width: 30%; background-color: rgb(156, 66, 66);"></span>
-                <img class="indicator" src="./assets/geologist_2.svg" style="left: 50%;" />
-              </div>    
+              <div class="meter hidden-element" id="meter">
+                <span
+                  style="width: 30%; background-color: rgb(66, 156, 66)"
+                ></span>
+                <span
+                  style="width: 40%; background-color: rgb(143, 156, 66)"
+                ></span>
+                <span
+                  style="width: 30%; background-color: rgb(156, 66, 66)"
+                ></span>
+                <img
+                  class="indicator"
+                  src="./assets/geologist_2.svg"
+                  style="left: 50%"
+                />
+              </div>
             </div>
-
           </div>
-          <div style="background: #1B1D21; border: 2px solid #e4e4e45e" class="box-info-single" id="box-info-2">
+          <div
+            style="background: #282828; border: 2px solid #e4e4e45e"
+            class="box-info-single"
+            id="box-info-2"
+          >
             <div class="info-text">
               <h3 class="title-1">Environment Risks</h3>
-              <div class="icons">
-                <div class="icon">
-                  <img src="./assets/fire.png" alt="Icon 1">
-                  <span class="tooltip">Mean temperature of 34°C, you may be exposed to termic stress</span>
+              <div class="icons hidden-element" id="icons">
+                <div class="icon" id="icon0">
+                  <img src="./assets/low.png" alt="Icon 0" />
+                  <span class="tooltip">Low temperatures</span>
                 </div>
-                <div class="icon">
-                  <img src="./assets/sun.png" alt="Icon 2">
-                  <span class="tooltip">High UV incidence, watch outfor sunburns</span>
+                <div class="icon" id="icon1">
+                  <img src="./assets/fire.png" alt="Icon 1" />
+                  <span class="tooltip"
+                    >Mean temperature of 34°C, you may be exposed to termic
+                    stress</span
+                  >
                 </div>
-                <div class="icon">
-                  <img src="./assets/rain.png" alt="Icon 3">
-                  <span class="tooltip">Mean Precipitation of 40mm/h can make field activities difficult</span>
+                <div class="icon" id="icon2">
+                  <img src="./assets/sun.png" alt="Icon 2" />
+                  <span class="tooltip"
+                    >High UV incidence, watch outfor sunburns</span
+                  >
                 </div>
-                <div class="icon">
-                  <img src="./assets/montanha.png" alt="Icon 4">
-                  <span class="tooltip">Terrain Slope of 30% can make it dificult to walk or climb</span>
+                <div class="icon" id="icon3">
+                  <img src="./assets/rain.png" alt="Icon 3" />
+                  <span class="tooltip"
+                    >Mean Precipitation of 40mm/h can make field activities
+                    difficult</span
+                  >
                 </div>
-                <div class="icon">
-                  <img src="./assets/vulcao.png" alt="Icon 5">
-                  <span class="tooltip">Active Volcanoes may be a threaten to your activities</span>
+                <div class="icon" id="icon4">
+                  <img src="./assets/montanha.png" alt="Icon 4" />
+                  <span class="tooltip"
+                    >Terrain Slope of 30% can make it dificult to walk or
+                    climb</span
+                  >
                 </div>
-                <div class="icon">
-                  <img src="./assets/earthquake.png" alt="Icon 6">
-                  <span class="tooltip">Earthquakes of 5 degrees in richter scale occur frequently in the last year</span>
+                <div class="icon" id="icon5">
+                  <img src="./assets/vulcao.png" alt="Icon 5" />
+                  <span class="tooltip"
+                    >Active Volcanoes may be a threaten to your activities</span
+                  >
+                </div>
+                <div class="icon" id="icon6">
+                  <img src="./assets/earthquake.png" alt="Icon 6" />
+                  <span class="tooltip"
+                    >Earthquakes of 5 degrees in richter scale occur frequently
+                    in the last year</span
+                  >
                 </div>
               </div>
             </div>
@@ -91,61 +157,52 @@
             <div class="feed">
               <div class="feed-single">
                 <div class="feed-text">
-
                   <div class="header-feed">
-                    <div >
-                      <img src="./assets/satellite.png" style="width: 26px;">
+                    <div>
+                      <img src="./assets/satellite.png" style="width: 26px" />
                       <span>Satellite Image</span>
                     </div>
                     <div>
-                      <img src="./assets/download.png" style="width: 26px;">
+                      <img src="./assets/download.png" style="width: 26px" />
                     </div>
                   </div>
-
-                  <img src="./assets/naturalview.png" class="imagem-responsiva">
+                  <h3 id="loading" class="visible-element">Loading...</h3>
+                  <div id="image-container"></div>
                 </div>
               </div>
-            </div> 
+            </div>
           </div>
 
           <div class="feed-2">
-
-
             <div class="feed">
               <div class="feed-single">
                 <div class="feed-text">
                   <div class="header-feed-2">
                     <div>
-                      <img src="./assets/geology.png" alt="">
+                      <img src="./assets/geology.png" alt="" />
                     </div>
                     <span>Geological Settings</span>
                   </div>
-                  <div class="image-text-geologico">
-                    O DO DANIEL AQUI
-                  </div>
                 </div>
-              </div> 
+              </div>
             </div>
             <div class="feed">
               <div class="feed-single">
                 <div class="feed-text">
                   <div class="header-feed-2">
                     <div>
-                      <img src="./assets/map.png" alt="">
+                      <img src="./assets/map.png" alt="" />
                     </div>
                     <span>Remote Sensing Summary</span>
                   </div>
+
                   <div class="image-text-responsivo"></div>
                 </div>
-              </div> 
+              </div>
             </div>
-
           </div>
         </div>
-
       </div>
     </section>
-
   </body>
-
 </html>

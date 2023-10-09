@@ -280,3 +280,80 @@ input:valid + .labelline{
 .accordion-width {
   display: none; 
 }
+
+@media only screen and (max-width: 600px) {
+  .flex{
+      flex-direction: column;
+  }
+  .three{
+      width: 100%;
+      height: 100%;
+      order: -1; /* Isso fará com que o modelo 3D apareça primeiro */
+  }
+  .conteudo{
+      width: 100%;
+      height: 100%;
+  }
+}
+
+@keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes flickerAnimation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#loading,
+#loading2 {
+  text-align: center;
+  -webkit-animation: flickerAnimation 1.5s infinite;
+  -moz-animation: flickerAnimation 1.5s infinite;
+  -o-animation: flickerAnimation 1.5s infinite;
+  animation: flickerAnimation 1.5s infinite;
+}
+
+.hidden-element {
+  visibility: hidden;
+}
+
+.visible-element {
+  visibility: visible;
+}
