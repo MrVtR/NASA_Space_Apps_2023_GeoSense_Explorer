@@ -1,128 +1,169 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./assets/LogoIcon.svg" />
+    <link rel="icon" type="image/svg+xml" href="assets/LogoIcon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="./css/viewer.css">
+    <link rel="stylesheet" href="css/viewer.css" />
 
     <!--ThreeJS Module-->
-    <script type="module" src="./earth_model/earth_model.js"></script>
+    <script type="module" src="earth_model/earth_model.js"></script>
 
     <!--Google Maps API Module and Src-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJK29dq8fwoVeHnfiDM1VrmRGuRnquUIg&libraries=places"></script>
-    <script type="module" src="./js//apiLogic/maps_autocomplete.js"></script>
+    <script type="module" src="js/maps_autocomplete.js"></script>
 
-    <!--Interaction Logic-->
-    <script type="module" src="./js//interactionLogic/accordion_logic.js"></script>
-    <script type="module" src="./js//interactionLogic/risk_gouge_logic.js"></script>
+    <!--Accordion Logic-->
+    <script type="module" src="js/accordion_logic.js"></script>
+
+    <script type="module" src="js/risk_gouge_logic.js"></script>
+
+    <script src="js/request.js"></script>
 
     <title>GeoSense Explorer</title>
   </head>
 
   <body>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <div class="flex">
-
       <div class="conteudo">
+        <img src="./assets/logotype.svg" width="300" height="40" />
 
-        <img src = "./assets/logotype.svg" width="300" height="40"/>
-
-        <p class="paragraph">Enter a location or it's Latitude and Longitude. You don't need to fill in both.</p>
+        <p class="paragraph">
+          Enter a location or it's Latitude and Longitude. You don't need to
+          fill in both.
+        </p>
 
         <!--Form-->
         <div class="entryarea">
-          <input type="text" id="location" required>
+          <input type="text" id="location" required />
           <div class="labelline">Enter a Location</div>
         </div>
 
         <div class="latlong-container">
           <div class="entryarea">
-            <input type="text" id="latitude" required>
+            <input type="text" id="latitude" required />
             <div class="labelline">Latitude</div>
           </div>
 
           <div class="entryarea">
-            <input type="text" id="longitude" required>
+            <input type="text" id="longitude" required />
             <div class="labelline">Longitude</div>
           </div>
         </div>
 
         <button id="addPoint">Return Location</button>
 
+        <!--Accordion-->
         <div class="accordion-width">
-          <button class="accordion" id="satelliteaccess">SATELLITE ACCESS</button>
+          <button class="accordion" id="satelliteaccess">
+            SATELLITE ACCESS
+          </button>
           <div class="panel" id="satelliteAccess">
-
             <section>
+              <h3 id="loading" class="hidden-element">Loading...</h3>
               <figure class="card">
                 <div class="card_hero">
-                  <a href="dashboard.html">
-                    <img class="card_img" src="./assets/imageSatPlay.jpg">
+                  <a href="dashboard.html" onclick="makePostRequest(event)">
+                    <img class="card_img" src="./assets/imageSatPlay.jpg" />
                   </a>
                 </div>
                 <div class="card_content">
                   <div class="card_info">
-                    <p class="card_title">
-                      LANDSAT 8 Image
-                    </p>
+                    <p class="card_title">LANDSAT 8 Image</p>
                   </div>
                 </div>
               </figure>
             </section>
-
           </div>
 
-          <button class="accordion" id="dataforex">DATA FOR EXPLORATION</button>
+          <button
+            class="accordion"
+            id="dataforex"
+            onclick="makePostRequestExploration()"
+          >
+            DATA FOR EXPLORATION
+          </button>
+
           <div class="panel" id="dificultyPanel">
-            <p class="title" id="icon-exploration-dificulty">Field Activities Difficulty Index</p>
-            <div class="meter">
-              <span style="width: 30%; background-color: rgb(66, 156, 66);"></span>
-              <span style="width: 40%; background-color: rgb(143, 156, 66);"></span>
-              <span style="width: 30%; background-color: rgb(156, 66, 66);"></span>
-              <img class="indicator" src="./assets/geologist_2.svg" style="left: 50%;" />
-            </div>            
+            <h3 id="loading2" class="hidden-element">Loading...</h3>
+            <div id="panel-details" class="hidden-element">
+              <p class="title" id="icon-exploration-dificulty">
+                Field Activities Dificulty Index
+              </p>
+              <div class="meter">
+                <span
+                  style="width: 30%; background-color: rgb(66, 156, 66)"
+                ></span>
+                <span
+                  style="width: 40%; background-color: rgb(143, 156, 66)"
+                ></span>
+                <span
+                  style="width: 30%; background-color: rgb(156, 66, 66)"
+                ></span>
+                <img
+                  class="indicator"
+                  src="./assets/geologist_2.svg"
+                  style="left: 50%"
+                />
+              </div>
 
-            <p class="title" id="icon-environment-risks">Environment Risks</p>
-            <div class="icons">
-              <div class="icon">
-                <img src="./assets/fire.png" alt="Icon 1">
-                <span class="tooltip" id="highTemp"></span>
-              </div> 
-
-              <div class="icon">
-                <img src="./assets/sun.png" alt="Icon 2">
-                <span class="tooltip">High UV incidence, watch outfor sunburns</span>
-              </div>
-              <div class="icon">
-                <img src="./assets/rain.png" alt="Icon 3">
-                <span class="tooltip">Mean Precipitation of 40mm/h can make field activities difficult</span>
-              </div>
-              <div class="icon">
-                <img src="./assets/montanha.png" alt="Icon 4">
-                <span class="tooltip">Terrain Slope of 30% can make it dificult to walk or climb</span>
-              </div>
-              <div class="icon">
-                <img src="./assets/vulcao.png" alt="Icon 5">
-                <span class="tooltip">Active Volcanoes may be a threaten to your activities</span>
-              </div>
-              <div class="icon">
-                <img src="./assets/earthquake.png" alt="Icon 6">
-                <span class="tooltip">Earthquakes of 5 degrees in richter scale occur frequently in the last year</span>
+              <p class="title" id="icon-environment-risks">Environment Risks</p>
+              <div class="icons" id="icons">
+                <div class="icon" id="icon0">
+                  <img src="./assets/low.png" alt="Icon 0" />
+                  <span class="tooltip">Low temperatures</span>
+                </div>
+                <div class="icon" id="icon1">
+                  <img src="./assets/fire.png" alt="Icon 1" />
+                  <span class="tooltip"
+                    >Mean temperature of 34°C, you may be exposed to termic
+                    stress</span
+                  >
+                </div>
+                <div class="icon" id="icon2">
+                  <img src="./assets/sun.png" alt="Icon 2" />
+                  <span class="tooltip"
+                    >High UV incidence, watch outfor sunburns</span
+                  >
+                </div>
+                <div class="icon" id="icon3">
+                  <img src="./assets/chuva.png" alt="Icon 3" />
+                  <span class="tooltip"
+                    >Mean Precipitation of 40mm/h can make field activities
+                    difficult</span
+                  >
+                </div>
+                <div class="icon" id="icon4">
+                  <img src="./assets/montanha.png" alt="Icon 4" />
+                  <span class="tooltip"
+                    >Terrain Slope of 30% can make it dificult to walk or
+                    climb</span
+                  >
+                </div>
+                <div class="icon" id="icon5">
+                  <img src="./assets/vulcao.png" alt="Icon 5" />
+                  <span class="tooltip"
+                    >Active Volcanoes may be a threaten to your activities</span
+                  >
+                </div>
+                <div class="icon" id="icon6">
+                  <img src="./assets/terremoto.png" alt="Icon 6" />
+                  <span class="tooltip"
+                    >Earthquakes of 5 degrees in richter scale occur frequently
+                    in the last year</span
+                  >
+                </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
 
       <div class="three" id="canvasContainer">
         <canvas></canvas>
       </div>
-
     </div>
-
   </body>
-
 </html>
