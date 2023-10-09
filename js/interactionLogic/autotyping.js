@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         button.addEventListener('click', (event) => {
             event.preventDefault();
 
+            let defaultText = 'Texto padrão aqui';
+            showText(el, defaultText, interval);
+
             let text;
             let imageSrc;
             switch (button.textContent.trim()) {
@@ -36,7 +39,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     imageSrc = './assets/landsat-test.png';
                     break;
                 case 'Sabins Ratio':
-                    text = 'This combination of bands is known as composite Sabin’s ratio. It is used mostly to Mapping hydrothermal alteration minerals. It uses RGB color composed of ratios R (4/2), G (6/7), B (6/5). Iron-oxide dominated areas are mapped in pink, clay and hydroxyl minerals in green and ferrous minerals are discriminated in blue. Hydrothermal alteration areas are represented by the association of green-pink or yellow zones.';
+                    text = 'This combination of bands is known as composite Sabins ratio. It is used mostly to Mapping hydrothermal alteration minerals. It uses RGB color composed of ratios R (4/2), G (6/7), B (6/5). Iron-oxide dominated areas are mapped in pink, clay and hydroxyl minerals in green and ferrous minerals are discriminated in blue. Hydrothermal alteration areas are represented by the association of green-pink or yellow zones.';
                     imageSrc = './assets/landsat-test.png';
                     break;
                 case 'Kaufman Ratio':
@@ -60,12 +63,32 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     imageSrc = './assets/landsat-test.png';
                     break;
                 default:
-                    text = 'Bands 4, 3 and 2 of Landsat 8 correspond, respectively, to the red, green and blue portions of the visible spectrum. It closely replicates what our human eyes can see. While healthy vegetation appears green in color, unhealthy flora is brown in color. Urban features are presented in white and gray tones, while the water is dark blue or black. This allows for better interpretation and differentiation of different targets, such as vegetation, urban areas and bodies of water.';
-                    imageSrc = './assets/landsat-test.png';
+                    text = '';
+                    imageSrc = '';
                     break;
             }
+
+            el.style.color = "#BDBDBE"; 
+            el.style.fontSize = "15px"; 
+            el.style.lineHeight = "24px";
+
             showText(el, text, interval);
             img.src = imageSrc;
         });
+        if (button.textContent.trim() === 'Natural Color') {
+            button.click();
+        }
+    });
+    
+    document.querySelector('.header-feed img[src="./assets/download.png"]').addEventListener('click', function() {
+        
+        let a = document.createElement('a');
+        
+        a.href = document.querySelector('.imagem-responsiva').src;
+        
+        a.download = 'processed-image.png';
+        
+        a.click();
     });
 });
+
