@@ -1,6 +1,7 @@
 # GeoSenseExplorer
 
 Our team: https://www.spaceappschallenge.org/2023/find-a-team/geosense-explorer
+
 To run: **Npm run dev** (need to install nodeJS)
 
 Docker FastAPI is hosted on Google Cloud Run with this [endpoint](https://nasa-api-sij3k2u3xa-rj.a.run.app)
